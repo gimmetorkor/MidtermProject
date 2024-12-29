@@ -1,6 +1,6 @@
 ## Cyber Crime Web – Midterm Project for Program Development for Digital Business
 
-This project is a web application created for the midterm exam in the "Program Development for Digital Business" course. It uses **Node.js** for the backend API and **MySQL** for database management, with a **Bootstrap** frontend.  
+This project is a full stack website created for the midterm exam in the "Program Development for Digital Business" course. It uses **Node.js** for the backend API and **MySQL** for database management, with a **Bootstrap** frontend.
 
 ### Key features include:
 - 📝 **User Registration** and secure password encryption with **bcrypt**.  
