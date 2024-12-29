@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Crime | Register</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ 
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:slnt,wght@-10..0,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="lib/animate/animate.min.css"/>
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script>
+        // Fetch the current visit count from the API and update the page
+        function updateVisitCount() {
+            fetch('/api/visits')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('counter').innerText = data.visitCount;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        // ฟังก์ชันดึงข้อมูลผู้ใช้และแสดงผลบนหน้าเว็บ
+    function checkLoginStatus() {
+        fetch('/getUser')
+            .then(response => response.json())
+            .then(data => {
+                if (data.loggedin) {
+                    // แสดงชื่อผู้ใช้ถ้าล็อกอินแล้ว
+                    document.getElementById('usernameDisplay').innerText = "Welcome, " + data.username + "!";
+                    
+                    // แสดงปุ่ม Log Out
+                    document.getElementById('logoutButton').style.display = "block";
+
+                    // ซ่อนปุ่ม Log In
+                    document.getElementById('loginButton').style.display = "none";
+
+                } else {
+                    // ถ้าไม่ได้ล็อกอิน แสดงเป็น Guest
+                    document.getElementById('usernameDisplay').innerText = "Welcome, Guest!";
+                    
+                    // ซ่อนปุ่ม Log Out
+                    document.getElementById('logoutButton').style.display = "none";
+
+                    // แสดงปุ่ม Log In
+                    document.getElementById('loginButton').style.display = "block";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // ฟังก์ชันออกจากระบบ
+    function logout() {
+        fetch('/signout')
+            .then(() => {
+                window.location.href = '/login';  // เมื่อออกจากระบบแล้วให้กลับไปหน้า login
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+        
+    
+        // Call the function to update the visit count when the page loads
+        window.onload = function() {
+            updateVisitCount();
+
+            checkLoginStatus();
+        };
+    </script>
+
+</head>
+<body>
+        <!-- Topbar Start -->
+        <div class="container-fluid topbar px-0 px-lg-4 bg-light py-2 d-none d-lg-block">
+            <div class="container">
+                <div class="row gx-0 align-items-center">
+                    <div class="col-lg-8 text-center text-lg-start mb-lg-0">
+                        <div class="d-flex flex-wrap">
+                            <div class="border-end border-primary pe-3" id="loginButton" style="display: none;">
+                                <!-- <button id="loginButton" class="btn btn-dark rounded-pill " style="display: none;" onclick="">Log in</button> -->
+                                <a href="/login" class="text-muted small"><i class="fas fa-user text-primary me-2"></i>Login</a>
+                            </div>
+                            <div class="ps-3">
+                                <p id="usernameDisplay"></p>
+                            </div>
+                            
+                            <div class="ps-3">
+                                <button id="logoutButton" class="btn btn-dark rounded-pill btn-sm" style="display: none;" onclick="logout()">Log Out</button>
+                            </div>
+                                                     
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center text-lg-end">
+                        <div class="d-flex justify-content-end">
+                            <div class="ps-3">
+                                <p id="usernameDisplay"></p>
+                            </div>
+                            
+                            <div class="ps-3">
+                                <button id="logoutButton" class="btn btn-dark rounded-pill " style="display: none;" onclick="logout()">Log Out</button>
+                            </div>
+                            <!-- <div class="d-flex ps-3">
+                                <p>This page has been visited <strong id="counter">0</strong> times.</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light"> 
+                    <a href="#" class="navbar-brand p-0">
+                        <h1 class="text-primary mb-0"><i class="fas fa-shield-alt me-2"></i> CyberCrime</h1>
+                        <!-- <img src="img/logo.png" alt="Logo"> -->
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav mx-0 mx-lg-auto">
+                            <a href="/index" class="nav-item nav-link">หน้าแรก</a>
+                            <a href="/about" class="nav-item nav-link">เกี่ยวกับ</a>
+                            <a href="/province" class="nav-item nav-link">วิธีป้องกัน</a>
+                            <a href="/report" class="nav-item nav-link">แจ้งความ</a>
+                            <a href="/news" class="nav-item nav-link">ข่าวล่าสุด</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                    <span class="dropdown-toggle">หน่วยงานที่เกี่ยวข้อง</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="https://www.royalthaipolice.go.th/" target="_blank" class="dropdown-item">สำนักงานตำรวจแห่งชาติ</a>
+                                    <a href="https://pct.police.go.th/" target="_blank" class="dropdown-item">ศูนย์ปราบปรามอาชญากรรมทางเทคโนโลยี ฯ</a>
+                                    <a href="https://tcsd.go.th/" target="_blank" class="dropdown-item">กองบังคับการปราบปรามการกระทำความผิด<br> เกี่ยวกับอาชญากรรมทางเทคโนโลยี</a>
+                                    <a href="https://www.mdes.go.th/" target="_blank" class="dropdown-item">กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม</a>
+                                    <a href="https://www.amlo.go.th/" target="_blank" class="dropdown-item">สำนักงานป้องกันและปราบปรามการฟอกเงิน</a>
+                                </div>
+                            </div>
+                            <a href="/contact" class="nav-item nav-link">ติดต่อเรา</a>
+                        </div>
+                    </div>
+                    <div class="d-none d-xl-flex flex-shrink-0 ps-4">
+                        <a href="#" class="btn btn-light btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+                            <i class="fa fa-phone-alt fa-2x"></i>
+                            <div class="position-absolute" style="top: 7px; right: 12px;">
+                                <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                            </div>
+                        </a>
+                        <div class="d-flex flex-column ms-3">
+                            <span>Call to Report</span>
+                            <a href="tel: 1441"> <span class="text-dark"><b>1441</b> (Free 24 hrs.) </span></a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar & Hero End -->
+
+        <!-- Notification Start
+        <div class="container form-outline mt-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>เกิดข้อผิดพลาด!</strong> ข้อมูลที่คุณกรอกไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div> -->
+
+        <!-- Info Start -->
+        <div class="container-fluid feature bg-light py-5">
+            <div class="container d-flex justify-content-center align-items-center min-vh-100 pb-5">
+                <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                    <div class="about-item-content text-center">
+                        <h4 class="text-primary">เริ่มต้น</h4>
+                        <h1 class="display-4 mb-4">สมัครสมาชิก<br>
+                            <span class="display-6 mb-4 text-danger">หรือ <a href="login.html">เข้าสู่ระบบที่นี่</a></span>
+                        </h1>
+                    </div>
+                    <div class="about-item-content bg-white rounded p-5 h-100 text-center">
+                        <form class="form" id="form" method="POST" action="/add">
+                            <div class="form-outline mb-4">
+                              <label for="username">ชื่อผู้ใช้</label>
+                              <input type="text" id="username" name="username"  placeholder="Username" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                              <label for="pass">Password</label>
+                              <input type="password" id="pass" name="password"  placeholder="Password" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                              <label for="re-pass">Repeat your password</label>
+                              <input type="password" id="re-pass" placeholder="ยืนยัน Password" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                              <label for="name">ชื่อ-สกุล</label>
+                              <input type="text" id="name" name="name"  placeholder="ชื่อ-สกุล" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                              <label for="gender" class="form-label">เพศ</label>
+                              <select id="gender" name="gender"  class="form-select">
+                                <option value="">เลือกเพศ</option>
+                                <option value="ชาย" selected>ชาย</option>
+                                <option value="หญิง">หญิง</option>
+                              </select>
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                                <label for="birthdate">วันเกิด</label>
+                                <div class="birthdate-fields d-flex">
+                                    <select id="day" name="day" class="form-control me-2">
+                                      <option value="">วัน</option>
+                                      <script>
+                                        for (let i = 1; i <= 31; i++) {
+                                          document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                      </script>
+                                    </select>
+                        
+                                    <select id="month" name="month" class="form-control me-2">
+                                        <option value="">เดือน</option>
+                                        <option value="1">มกราคม</option>
+                                        <option value="2">กุมภาพันธ์</option>
+                                        <option value="3">มีนาคม</option>
+                                        <option value="4">เมษายน</option>
+                                        <option value="5">พฤษภาคม</option>
+                                        <option value="6">มิถุนายน</option>
+                                        <option value="7">กรกฎาคม</option>
+                                        <option value="8">สิงหาคม</option>
+                                        <option value="9">กันยายน</option>
+                                        <option value="10">ตุลาคม</option>
+                                        <option value="11">พฤศจิกายน</option>
+                                        <option value="12">ธันวาคม</option>
+                                    </select>
+                        
+                                    <select id="year" name="year" class="form-control">
+                                      <option value="">ปี</option>
+                                      <script>
+                                        const currentYear = new Date().getFullYear();
+                                        for (let i = currentYear; i >= 1900; i--) {
+                                          document.write('<option value="' + i + '">' + i + '</option>');
+                                        }
+                                      </script>
+                                    </select>
+                                </div>
+                              <small>error message</small>
+                            </div>
+                            <input type="hidden" id="birthday" name="birthday">
+                          
+                            <div class="form-outline mb-4">
+                              <label for="email">Your Email</label>
+                              <input type="email" id="email" name="email"  placeholder="Email" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="form-outline mb-4">
+                              <label for="tel">เบอร์โทรศัพท์</label>
+                              <input type="text" id="tel" name="tel"  placeholder="Telephone Number" class="form-control form-control-lg">
+                              <small>error message</small>
+                            </div>
+                          
+                            <div class="d-flex justify-content-center">
+                              <button type="submit" class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2">สมัครสมาชิก</button>
+                            </div>
+                          </form>
+                          
+                          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                          <script>
+                            document.getElementById("form").addEventListener("submit", function(event) {
+                              event.preventDefault();
+                          
+                              const username = document.getElementById("username").value;
+                              const password = document.getElementById("pass").value;
+                              const confirmPassword = document.getElementById("re-pass").value;
+                              const name = document.getElementById("name").value;
+                              const gender = document.getElementById("gender").value;
+                              const day = document.getElementById("day").value;
+                              const month = document.getElementById("month").value;
+                              const year = document.getElementById("year").value;
+                              const email = document.getElementById("email").value;
+                              const tel = document.getElementById("tel").value;
+                              
+                          
+                              if (!username) {
+                                Swal.fire("กรุณากรอกชื่อผู้ใช้");
+                                return;
+                              }
+                              if (password.length < 8 || password.length > 20) {
+                                Swal.fire("รหัสผ่านต้องมีความยาว 8-20 ตัวอักษร!");
+                                return;
+                              }
+                              if (password !== confirmPassword) {
+                                Swal.fire("รหัสผ่านไม่ตรงกัน!");
+                                return;
+                              }
+                              if (!name) {
+                                Swal.fire("กรุณากรอกชื่อ-สกุล");
+                                return;
+                              }
+                              if (!gender) {
+                                Swal.fire("กรุณาเลือกเพศ");
+                                return;
+                              }
+
+                              // เช็คว่าค่าวัน เดือน ปีมีครบ
+                              if (day && month && year) {
+                                // รวมเป็นรูปแบบ YYYY-MM-DD
+                                const birthday = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                                document.getElementById("birthday").value = birthday;
+                            } else {
+                                event.preventDefault();
+                                alert("กรุณากรอกวันเดือนปีให้ครบถ้วน");
+                            }
+
+                              const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                              if (!emailPattern.test(email)) {
+                                Swal.fire("รูปแบบอีเมลไม่ถูกต้อง");
+                                return;
+                              }
+                              const phonePattern = /^[0-9]{10}$/;
+                              if (!phonePattern.test(tel)) {
+                                Swal.fire("เบอร์มือถือไม่ถูกต้อง");
+                                return;
+                              }
+                          
+                              Swal.fire({
+                                title: "ต้องการสมัครสมาชิกหรือไม่?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "ยืนยัน",
+                                cancelButtonText: "ยกเลิก",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  document.getElementById("form").submit();
+                                }
+                              });
+                            });
+                          </script>
+                          
+                          
+                    </div>                      
+                </div>
+            </div>
+        </div>
+        <!-- Info End -->
+        
+        <!-- Footer Start -->
+        <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-xl-9">
+                        <div class="mb-5">
+                            <div class="row g-4">
+                                <div class="col-md-6 col-lg-6 col-xl-5">
+                                    <div class="footer-item">
+                                        <a href="index.html" class="p-0">
+                                            <h3 class="text-white"><i class="fas fa-shield-alt me-2"></i> CyberCrime</h3>
+                                            <!-- <img src="img/logo.png" alt="Logo"> -->
+                                        </a>
+                                        <p class="text-white mb-4">
+                                            อาชญากรรมทางไซเบอร์ หรือ Cyber Crime <br>การทุจริตหลอกลวงที่เกิดขึ้นบนโลกอินเตอร์เน็ตและช่องทางออนไลน์ประเภทต่าง ๆ ไม่ว่าจะเป็นเว็บไซต์ โซเชียลมีเดีย หรือแอปพลิเคชันบนโทรศัพท์มือถือ
+                                        </p>
+                                        <div class="footer-btn d-flex">
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-twitter"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-instagram"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                    <div class="footer-item">
+                                        <h4 class="text-white mb-4">หน่วยงานที่เกี่ยวข้อง</h4>
+                                        <a href="https://www.royalthaipolice.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> สำนักงานตำรวจแห่งชาติ</a>
+                                        <a href="https://pct.police.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> ศูนย์ปราบปรามอาชญากรรมทางเทคโนโลยีสารสนเทศ</a>
+                                        <a href="https://tcsd.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> กองบังคับการปราบปรามการกระทำความผิด เกี่ยวกับอาชญากรรมทางเทคโนโลยี</a>
+                                        <a href="https://www.mdes.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม</a>
+                                        <a href="https://www.amlo.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> สำนักงานป้องกันและปราบปรามการฟอกเงิน</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                            <div class="row g-0">
+                                <div class="col-12">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fas fa-map-marker-alt fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">ที่อยู่</h4>
+                                                    <p class="mb-0">114 ซอยสุขุมวิท 23 เขตวัฒนา กรุงเทพมหานคร 10110</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fas fa-envelope fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">ส่งข้อความถึงเรา</h4>
+                                                    <p class="mb-0">panttpa1@gmail.com</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fa fa-phone-alt fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">โทร</h4>
+                                                    <p class="mb-0">02 456 7890</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3">
+                        <div class="footer-item">
+                            <h4 class="text-white mb-4">ช่องทางการติดต่อ</h4>
+                            <p class="text-white mb-3">
+                                ติดต่อหน่วยงาน <br>
+                                02 504 4850  <br>
+                                จันทร์ - ศุกร์ : 08:30 - 16:30
+                            </p>
+                            <p class="text-white mb-3">
+                                ปรึกษาคดีอาชญากรรมทางเทคโนโลยี <br>
+                                สายด่วน 1441 , 081-866-3000 <br>
+                                ตลอด 24 ชั่วโมง
+                            </p>
+                            <p class="text-white mb-3">
+                                แจ้งความออนไลน์ได้ที่ <a href="https://www.thaipoliceonline.com" target="_blank">www.thaipoliceonline.com</a>
+                            </p>
+                            <div class="d-flex flex-shrink-0">
+                                <div class="footer-btn">
+                                    <a href="#" class="btn btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+                                        <i class="fa fa-phone-alt fa-2x"></i>
+                                        <div class="position-absolute" style="top: 2px; right: 12px;">
+                                            <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="d-flex flex-column ms-3 flex-shrink-0">
+                                    <span>Call to Report</span>
+                                    <a href="tel: 1441"> <span class="text-white"><b>1441</b> (Free 24 hrs.) </span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- <script src="js/check.js"></script> -->
+    
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

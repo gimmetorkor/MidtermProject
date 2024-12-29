@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Crime | Home</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- CDN -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  -->
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:slnt,wght@-10..0,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+
+    <!-- Libraries Stylesheet -->
+    <link rel="stylesheet" href="lib/animate/animate.min.css"/>
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script>
+        // Fetch the current visit count from the API and update the page
+        function updateVisitCount() {
+            fetch('/api/visits')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('counter').innerText = data.visitCount;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        // ฟังก์ชันดึงข้อมูลผู้ใช้และแสดงผลบนหน้าเว็บ
+    function checkLoginStatus() {
+        fetch('/getUser')
+            .then(response => response.json())
+            .then(data => {
+                if (data.loggedin) {
+                    // แสดงชื่อผู้ใช้ถ้าล็อกอินแล้ว
+                    document.getElementById('usernameDisplay').innerText = "Welcome, " + data.username + "!";
+                    
+                    // แสดงปุ่ม Log Out
+                    document.getElementById('logoutButton').style.display = "block";
+
+                    // ซ่อนปุ่ม Log In
+                    document.getElementById('loginButton').style.display = "none";
+
+                } else {
+                    // ถ้าไม่ได้ล็อกอิน แสดงเป็น Guest
+                    document.getElementById('usernameDisplay').innerText = "Welcome, Guest!";
+                    
+                    // ซ่อนปุ่ม Log Out
+                    document.getElementById('logoutButton').style.display = "none";
+
+                    // แสดงปุ่ม Log In
+                    document.getElementById('loginButton').style.display = "block";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // ฟังก์ชันออกจากระบบ
+    function logout() {
+        fetch('/signout')
+            .then(() => {
+                window.location.href = '/login';  // เมื่อออกจากระบบแล้วให้กลับไปหน้า login
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+        
+    
+        // Call the function to update the visit count when the page loads
+        window.onload = function() {
+            updateVisitCount();
+
+            checkLoginStatus();
+        };
+    </script>
+    
+
+</head>
+<body>
+
+        <!-- Topbar Start -->
+        <div class="container-fluid topbar px-0 px-lg-4 bg-light py-2 d-none d-lg-block">
+            <div class="container">
+                <div class="row gx-0 align-items-center">
+                    <div class="col-lg-8 text-center text-lg-start mb-lg-0">
+                        <div class="d-flex flex-wrap">
+                            <div class="border-end border-primary pe-3" id="loginButton" style="display: none;">
+                                <!-- <button id="loginButton" class="btn btn-dark rounded-pill " style="display: none;" onclick="">Log in</button> -->
+                                <a href="/login" class="text-muted small"><i class="fas fa-user text-primary me-2"></i>Login</a>
+                            </div>
+                            <div class="ps-3">
+                                <p id="usernameDisplay"></p>
+                            </div>
+                            
+                            <div class="ps-3">
+                                <button id="logoutButton" class="btn btn-dark rounded-pill btn-sm" style="display: none;" onclick="logout()">Log Out</button>
+                            </div>
+                                                     
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center text-lg-end">
+                        <div class="d-flex justify-content-end">
+                            <div class="ps-3">
+                                <p id="usernameDisplay"></p>
+                            </div>
+                            
+                            <div class="ps-3">
+                                <button id="logoutButton" class="btn btn-dark rounded-pill " style="display: none;" onclick="logout()">Log Out</button>
+                            </div>
+                            <div class="d-flex ps-3">
+                                <p>This page has been visited <strong id="counter">0</strong> times.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light"> 
+                    <a href="#" class="navbar-brand p-0">
+                        <h1 class="text-primary mb-0"><i class="fas fa-shield-alt me-2"></i> CyberCrime</h1>
+                        <!-- <img src="img/logo.png" alt="Logo"> -->
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav mx-0 mx-lg-auto">
+                            <a href="/index" class="nav-item nav-link">หน้าแรก</a>
+                            <a href="/about" class="nav-item nav-link">เกี่ยวกับ</a>
+                            <a href="/province" class="nav-item nav-link">วิธีป้องกัน</a>
+                            <a href="/report" class="nav-item nav-link">แจ้งความ</a>
+                            <a href="/news" class="nav-item nav-link">ข่าวล่าสุด</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                    <span class="dropdown-toggle">หน่วยงานที่เกี่ยวข้อง</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="https://www.royalthaipolice.go.th/" target="_blank" class="dropdown-item">สำนักงานตำรวจแห่งชาติ</a>
+                                    <a href="https://pct.police.go.th/" target="_blank" class="dropdown-item">ศูนย์ปราบปรามอาชญากรรมทางเทคโนโลยี ฯ</a>
+                                    <a href="https://tcsd.go.th/" target="_blank" class="dropdown-item">กองบังคับการปราบปรามการกระทำความผิด<br> เกี่ยวกับอาชญากรรมทางเทคโนโลยี</a>
+                                    <a href="https://www.mdes.go.th/" target="_blank" class="dropdown-item">กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม</a>
+                                    <a href="https://www.amlo.go.th/" target="_blank" class="dropdown-item">สำนักงานป้องกันและปราบปรามการฟอกเงิน</a>
+                                </div>
+                            </div>
+                            <a href="/contact" class="nav-item nav-link">ติดต่อเรา</a>
+                        </div>
+                    </div>
+                    <div class="d-none d-xl-flex flex-shrink-0 ps-4">
+                        <a href="#" class="btn btn-light btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+                            <i class="fa fa-phone-alt fa-2x"></i>
+                            <div class="position-absolute" style="top: 7px; right: 12px;">
+                                <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                            </div>
+                        </a>
+                        <div class="d-flex flex-column ms-3">
+                            <span>Call to Report</span>
+                            <a href="tel: 1441"> <span class="text-dark"><b>1441</b> (Free 24 hrs.) </span></a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar & Hero End -->
+
+
+        <!-- Carousel Start -->
+        <div class="header-carousel owl-carousel">
+            <div class="header-carousel-item bg-primary">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-lg-7 animated fadeInLeft">
+                                <div class="text-sm-center text-md-start">
+                                    <!-- <h4 class="text-white text-uppercase fw-bold mb-4">Welcome To LifeSure</h4> -->
+                                    <h1 class="display-2 text-white mb-4">อาชญากรรมทางไซเบอร์ <br>(Cyber Crime)</h1>
+                                    <p class="mb-5 fs-5">
+                                        ชาวไทยกว่า 50% เคยมีประสบการณ์ถูกหลอกลวงทางออนไลน์ระหว่างช่วง 1 ปีที่ผ่านมา โดย 2 ใน 5 คน หลงเชื่อและตกเป็นเหยื่อของอาชญากรรมทางไซเบอร์ โดยเกิดความเสียหายเฉลี่ยประมาณ <span class="text-danger">2,400 บาทต่อคน</span>เลยทีเดียว
+                                    </p>
+                                    <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
+                                        <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="about.html">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 animated fadeInRight">
+                                <div class="calrousel-img" style="object-fit: cover;">
+                                    <img src="img/carousel-1.png" class="img-fluid w-100" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-carousel-item bg-primary">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row gy-4 gy-lg-0 gx-0 gx-lg-5 align-items-center">
+                            <div class="col-lg-5 animated fadeInLeft">
+                                <div class="calrousel-img">
+                                    <img src="img/carousel-2.png" class="img-fluid w-100" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-7 animated fadeInRight">
+                                <div class="text-sm-center text-md-end">
+                                    <h4 class="text-danger text-uppercase fw-bold mb-4">รู้เท่าทัน!</h4>
+                                    <h1 class="display-1 text-white mb-4">วิธีป้องกัน</h1>
+                                    <p class="mb-5 fs-5">
+                                        อาชญากรรมทางไซเบอร์ (Cyber crime) เป็นภัยคุกคามต่อบุคคล องค์กร และประเทศชาติ จำเป็นต้องมีการร่วมมือกันของทุกภาคส่วนในการป้องกันและปราบปรามอาชญากรรมเหล่านี้ ในส่วนของบุคคลธรรมดา 
+                                        เราสามารถรับมือกับอาชญากรรมทางไซเบอร์ได้ดังนี้
+                                    </p>
+                                    <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
+                                        <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="https://youtu.be/07ADQXJFJ6E?si=D_Bl6F8ISSmEbM80" target="_blank"><i class="fas fa-play-circle me-2"></i> Watch Video</a>
+                                        <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="province.html">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Carousel End -->
+
+
+        <!-- Info Start -->
+        <div class="container-fluid feature bg-light py-5">
+            <div class="container py-5">
+                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                    <h4 class="text-danger">ทำความรู้จัก รู้เท่าทัน</h4>
+                    <h1 class="display-4 mb-4">Cyber Crime</h1>
+                    <p class="mb-0">
+                        อาชญากรรมทางไซเบอร์ หรือ Cyber Crime หมายถึงการทุจริตหลอกลวงที่เกิดขึ้นบนโลกอินเตอร์เน็ตและช่องทางออนไลน์ประเภทต่าง ๆ 
+                        ไม่ว่าจะเป็นเว็บไซต์ โซเชียลมีเดีย หรือแอปพลิเคชันบนโทรศัพท์มือถือ <br>
+                        ภัยคุกคามทางไซเบอร์ 3 แบบที่พบเจอบ่อย ได้แก่ 
+                    </p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="feature-item p-4 pt-0">
+                            <div class="feature-icon p-4 mb-4">
+                                <i class="far fa-lock fa-3x"></i>
+                            </div>
+                            <h4 class="mb-4">Ransomware</h4>
+                            <p class="mb-4">
+                                เป็นช่องทางที่อาจทำให้เกิดการติด Ransomware เข้าสู่ระบบคอมพิวเตอร์โดยไม่ได้รับอนุญาต โดยส่วนใหญ่จะเกิดจากการเข้าเว็บไซต์ที่ไม่ปลอดภัย การคลิกลิงค์โฆษณาที่เป็นอันตราย หรือการดาวน์โหลดไฟล์ driver จากอินเทอร์เน็ต 
+                            </p>
+                            <a class="btn btn-primary rounded-pill py-2 px-4" href="about.html">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="feature-item p-4 pt-0">
+                            <div class="feature-icon p-4 mb-4">
+                                <i class="fa fa-wifi fa-3x"></i>
+                            </div>
+                            <h4 class="mb-4">Hacking</h4>
+                            <p class="mb-4">
+                                การใช้งาน WiFi ที่ไม่รู้จัก มีความเสี่ยงที่จะถูกแฮกข้อมูล การนำคอมพิวเตอร์และอุปกรณ์ส่วนตัวที่มีความเสี่ยงมาใช้ในการทำงาน (ไม่ติดตั้ง Antivirus / ไม่ได้อัปเดต Patch / เข้าเว็บไซต์เสียง) 
+                            </p>
+                            <a class="btn btn-primary rounded-pill py-2 px-4" href="about.html">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="feature-item p-4 pt-0">
+                            <div class="feature-icon p-4 mb-4">
+                                <i class="fa fa-dollar-sign fa-3x"></i>
+                            </div>
+                            <h4 class="mb-4">Phishing</h4>
+                            <p class="mb-4">
+                                เป็นการหลอกลวงโดยอาศัยหลักจิตวิทยาให้เหยื่อหลงเชื่อ เพื่อให้ได้ผลประโยชน์ตามที่แฮกเกอร์ต้องการ ภัยคุกคามทางสังคมใช้เทคนิคการกระตุ้นความอยากรู้อยากเห็นของเหยื่อ เพื่อให้เหยื่อเปิดเผยข้อมูลสำคัญ
+                            </p>
+                            <a class="btn btn-primary rounded-pill py-2 px-4" href="about.html">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- Info End -->
+
+
+        <!-- province Start -->
+        <div class="container-fluid bg-light about pb-5">
+            <div class="container pb-5">
+                <div class="row g-5">
+                    <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                        <div class="about-item-content bg-white rounded p-5 h-100">
+                            <h4 class="text-primary">เตรียมความพร้อม</h4>
+                            <h1 class="display-4 mb-4">วิธีการป้องกันตนเองเบื้องต้น</h1>
+                            <p>
+                                การรู้ เข้าใจ และตระหนักถึงอาชญากรรมทางไซเบอร์ (Cybercrime) เป็นสิ่งสำคัญที่จะช่วยให้เราป้องกันตนเองและองค์กรของเราจากการโจมตีทางไซเบอร์
+                            </p>
+                            <p>
+                                ผู้อำนวยการสำนักบริหารเทคโนโลยีสารสนเทศแนะวิธีป้องกันตนเองจากอาชญากรรมทางไซเบอร์ ควรทำตามคำแนะนำต่อไปนี้ 
+                            </p>
+                            <p class="text-dark"><i class="fa fa-check text-primary me-3"></i>ติดตั้งโปรแกรม Antivirus และ Update โปรแกรมอย่างสม่ำเสมอ</p>
+                            <p class="text-dark"><i class="fa fa-check text-primary me-3"></i>สํารองข้อมูลที่สำคัญอย่างสม่ำเสมอ และแยกเก็บไว้อีกทีเพื่อความปลอดภัย</p>
+                            <p class="text-dark mb-4"><i class="fa fa-check text-primary me-3"></i>ไม่กดลิงก์ และไม่ดาวน์โหลดไฟล์จากอีเมลและเว็บไซต์ที่ไม่ปลอดภัย</p>
+                            <a class="btn btn-primary rounded-pill py-3 px-5" href="province.html">More Information</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.2s">
+                        <div class="bg-white rounded p-5 h-100">
+                            <div class="row g-4 justify-content-center">
+                                <div class="col-12">
+                                    <div class="rounded bg-light">
+                                        <img src="img/about-1.png" class="img-fluid rounded w-100" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="counter-item bg-light rounded p-3 h-100">
+                                        <h4 class="mb-0 text-dark">การแจ้งความอาชญากรรมทางไซเบอร์</h4>
+                                        <div class="counter-counting">
+                                            <span class="text-danger fs-2 fw-bold" data-toggle="counter-up">192,031 </span>
+                                            <span class="h3 fw-bold text-danger">คดี</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="counter-item bg-light rounded p-3 h-100">
+                                        <h4 class="mb-0 text-dark">มูลค่าความเสียหายทั้งสิ้น</h4>
+                                        <div class="counter-counting">
+                                            <span class="text-danger fs-2 fw-bold" data-toggle="counter-up">29,546,732,805 </span>
+                                            <span class="h3 fw-bold text-danger">ล้านบาท</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- province End -->
+
+        <!-- FAQs Start -->
+        <div class="container-fluid faq-section bg-light py-1">
+            <div class="container py-2">
+                <div class="row g-5 align-items-center">
+                    <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                        <div class="h-100">
+                            <div class="mb-5">
+                                <h4 class="text-primary">พร้อมรับมือ</h4>
+                                <h1 class="display-4 mb-0 text-danger">หากคุณตกเป็นเหยื่อ!</h1>
+                                <h1 class="display-4 mb-0">Cyber Crime</h1>
+                            </div>
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Q: หากฉันตกเป็นเหยื่ออาชญากรรมออนไลน์ ฉันต้องทำอย่างไรบ้าง
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show active" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body rounded">
+                                            A: <span class="text-danger">1. แจ้งระงับบัญชีธนาคารทันที</span> โดยธนาคารจะระงับได้ไม่เกิน 7 วัน และจะส่งต่อข้อมูลให้ธนาคารอื่นทราบ เพื่อระงับบัญชีอื่นที่เกี่ยวข้อง โดยแจ้งทางโทรศัพท์หรือแอปพลิเคชันของธนาคาร<br>
+                                                <span class="text-danger">2. เก็บหลักฐานการโอนเงิน</span> หากโอนเงินแล้วผู้เสียหายควรจัดเก็บหลักฐาน เช่น เลขบัญชีธนาคาร ชื่อบัญชี สาขาที่โอน หรือการโอนเงินรูปแบบอื่นๆที่มีหลักฐาน<br>
+                                                <span class="text-danger">3. เก็บหลักฐานการติดต่อ</span> ผู้เสียหายควรเก็บข้อมูล อีเมลและข้อมูลทางคอมพิวเตอร์ใดๆ หรือการติดต่อสื่อสารทุกช่องทางกับผู้กระทำผิด<br>
+                                                <span class="text-danger">4. ภายใน 72 ชั่วโมง</span> เพื่อใช้เป็นหลักฐานในการดำเนินคดีกับบัญชีดังกล่าวภายใน 7 วัน
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Q: ฉันสามารถแจ้งความได้อย่างไรบ้าง?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            A: สามารถแจ้งความผ่านระบบรับแจ้งความออนไลน์ (เฉพาะคดีอาชญากรรมทางเทคโนโลยี) ที่เว็บไซต์นี้เท่านั้น <a href="https://www.thaipoliceonline.go.th" target="_blank" class="text-danger">www.thaipoliceonline.go.th</a> หากมีข้อสงสัย สามารถโทรปรึกษาสายด่วน <a href="https://www.thaipoliceonline.go.th" target="_blank" class="text-danger">1441</a> ได้ตลอด 24 ชั่วโมง
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.4s">
+                        <img src="img/faq-1.png" class="img-fluid w-100" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FAQs End -->
+
+        <!-- News Start -->
+        <div class="container-fluid blog py-5">
+            <div class="container py-5">
+                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                    <h4 class="text-primary">ติดตาม</h4>
+                    <h1 class="display-4 mb-4">ข่าวสารและการประชาสัมพันธ์</h1>
+                    <p class="mb-0">
+                        ติดตามข่าวสารที่เกี่ยวกับอาชญากรรมทางคอมพิวเตอร์ และการตรวจสอบข้อเท็จจริงก่อนส่งต่อข้อมูลสู่สาธารณะ
+                    </p>
+                </div>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="img/blog-1.png" class="img-fluid rounded-top w-100" alt="">
+                                <div class="blog-categiry py-2 px-4">
+                                    <span>Crime</span>
+                                </div>
+                            </div>
+                            <div class="blog-content p-4">
+                                <div class="blog-comment d-flex justify-content-between mb-3">
+                                    <div class="small"><span class="fa fa-user text-primary"></span> ตำรวจไซเบอร์ – บช.สอท.</div>
+                                    <div class="small"><span class="fa fa-calendar text-primary"></span> 28 Sep 2025</div>
+                                </div>
+                                <a href="#" class="h4 d-inline-block mb-3">"ซื้อทองออนไลน์" อันตรายไหม...เลือกซื้ออย่างไรให้ปลอดภัย</a>
+                                <p class="mb-3">
+                                    ⚠️ การซื้อทองออนไลน์นั้นมีความเสี่ยงสูงต่อการถูกหลอก หรือโกงจากมิจฉาชีพ การซื้อทองจากหน้าร้านจึงมีความปลอดภัยที่สูงกว่า แต่ถ้ามีความจำเป็นที่ต้องซื้อออนไลน์ควรตรวจสอบให้ดี ดังนี้...
+                                </p>
+                                <a href="https://www.facebook.com/photo/?fbid=831181332527593&set=a.243987694580296" target="_blank" class="btn p-0">Read More  <i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="img/blog-2.png" class="img-fluid rounded-top w-100" alt="">
+                                <div class="blog-categiry py-2 px-4">
+                                    <span>Crime</span>
+                                </div>
+                            </div>
+                            <div class="blog-content p-4">
+                                <div class="blog-comment d-flex justify-content-between mb-3">
+                                    <div class="small"><span class="fa fa-user text-primary"></span> ตำรวจไซเบอร์ – บช.สอท.</div>
+                                    <div class="small"><span class="fa fa-calendar text-primary"></span> 17 Sep 2025</div>
+                                </div>
+                                <a href="#" class="h4 d-inline-block mb-3">"มิจฉาชีพ" ตีเนียนหลอกลวงให้โอนเงินช่วยผู้ประสบภัยน้ำท่วม</a>
+                                <p class="mb-3">
+                                    ⚠️ ถ้าไม่อยากถูกหลอก ลองเช็คซักนิดก่อนโอน
+                                    1. มิจฉาชีพมักจะแอบอ้างหน่วยงานรัฐหรือบริษัทต่างๆ ที่มีชื่อเสียงเพื่อสร้างความน่าเชื่อถือให้คนหลงเชื่อ
+                                    2. ตรวจสอบให้ดีก่อนว่าบุคคลหรือหน่วยงานนั้นมีตัวตนอยู่จริง...
+                                </p>
+                                <a href="https://www.facebook.com/photo/?fbid=823339866645073&set=a.243987694580296" target="_blank" class="btn p-0">Read More  <i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="img/blog-3.png" class="img-fluid rounded-top w-100" alt="">
+                                <div class="blog-categiry py-2 px-4">
+                                    <span>Crime</span>
+                                </div>
+                            </div>
+                            <div class="blog-content p-4">
+                                <div class="blog-comment d-flex justify-content-between mb-3">
+                                    <div class="small"><span class="fa fa-user text-primary"></span> ตำรวจไซเบอร์ – บช.สอท.</div>
+                                    <div class="small"><span class="fa fa-calendar text-primary"></span> 14 Sep 2025</div>
+                                </div>
+                                <a href="#" class="h4 d-inline-block mb-3">มิจฉาชีพอัพเวล ใช้ Google Voice หลอกคุมบัญชีอีเมล📱</a>
+                                <p class="mb-3">
+                                    กลโกงมิจฉาชีพ
+                                    ⛔ อ้างเป็นหน่วยงานที่น่าเชื่อถือหลอกขอรหัสยืนยันตัวตน OTP ผ่าน SMS
+                                    ⛔ คนร้ายสามารถเข้าถึง บัญชี Google ของเราได้
+                                    ⛔ คนร้ายอาจสร้าง Google Voice ที่เชื่อมโยงกับเบอร์เรา...
+                                </p>
+                                <a href="https://www.facebook.com/photo/?fbid=821334170178976&set=a.243987694580296" target="_blank" class="btn p-0">Read More  <i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- News End -->
+
+        <!-- Footer Start -->
+        <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-xl-9">
+                        <div class="mb-5">
+                            <div class="row g-4">
+                                <div class="col-md-6 col-lg-6 col-xl-5">
+                                    <div class="footer-item">
+                                        <a href="index.html" class="p-0">
+                                            <h3 class="text-white"><i class="fas fa-shield-alt me-2"></i> CyberCrime</h3>
+                                            <!-- <img src="img/logo.png" alt="Logo"> -->
+                                        </a>
+                                        <p class="text-white mb-4">
+                                            อาชญากรรมทางไซเบอร์ หรือ Cyber Crime <br>การทุจริตหลอกลวงที่เกิดขึ้นบนโลกอินเตอร์เน็ตและช่องทางออนไลน์ประเภทต่าง ๆ ไม่ว่าจะเป็นเว็บไซต์ โซเชียลมีเดีย หรือแอปพลิเคชันบนโทรศัพท์มือถือ
+                                        </p>
+                                        <div class="footer-btn d-flex">
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-twitter"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-instagram"></i></a>
+                                            <a class="btn btn-md-square rounded-circle me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                    <div class="footer-item">
+                                        <h4 class="text-white mb-4">หน่วยงานที่เกี่ยวข้อง</h4>
+                                        <a href="https://www.royalthaipolice.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> สำนักงานตำรวจแห่งชาติ</a>
+                                        <a href="https://pct.police.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> ศูนย์ปราบปรามอาชญากรรมทางเทคโนโลยีสารสนเทศ</a>
+                                        <a href="https://tcsd.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> กองบังคับการปราบปรามการกระทำความผิด เกี่ยวกับอาชญากรรมทางเทคโนโลยี</a>
+                                        <a href="https://www.mdes.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม</a>
+                                        <a href="https://www.amlo.go.th/" target="_blank"><i class="fas fa-angle-right me-2"></i> สำนักงานป้องกันและปราบปรามการฟอกเงิน</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                            <div class="row g-0">
+                                <div class="col-12">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fas fa-map-marker-alt fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">ที่อยู่</h4>
+                                                    <p class="mb-0">114 ซอยสุขุมวิท 23 เขตวัฒนา กรุงเทพมหานคร 10110</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fas fa-envelope fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">ส่งข้อความถึงเรา</h4>
+                                                    <p class="mb-0">panttpa1@gmail.com</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="d-flex">
+                                                <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                                                    <i class="fa fa-phone-alt fa-2x"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white">โทร</h4>
+                                                    <p class="mb-0">02 456 7890</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3">
+                        <div class="footer-item">
+                            <h4 class="text-white mb-4">ช่องทางการติดต่อ</h4>
+                            <p class="text-white mb-3">
+                                ติดต่อหน่วยงาน <br>
+                                02 504 4850  <br>
+                                จันทร์ - ศุกร์ : 08:30 - 16:30
+                            </p>
+                            <p class="text-white mb-3">
+                                ปรึกษาคดีอาชญากรรมทางเทคโนโลยี <br>
+                                สายด่วน 1441 , 081-866-3000 <br>
+                                ตลอด 24 ชั่วโมง
+                            </p>
+                            <p class="text-white mb-3">
+                                แจ้งความออนไลน์ได้ที่ <a href="https://www.thaipoliceonline.com" target="_blank">www.thaipoliceonline.com</a>
+                            </p>
+                            <div class="d-flex flex-shrink-0">
+                                <div class="footer-btn">
+                                    <a href="#" class="btn btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+                                        <i class="fa fa-phone-alt fa-2x"></i>
+                                        <div class="position-absolute" style="top: 2px; right: 12px;">
+                                            <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="d-flex flex-column ms-3 flex-shrink-0">
+                                    <span>Call to Report</span>
+                                    <a href="tel: 1441"> <span class="text-white"><b>1441</b> (Free 24 hrs.) </span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
